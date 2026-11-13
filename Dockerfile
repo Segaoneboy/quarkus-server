@@ -1,7 +1,8 @@
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /workspace
-COPY . .
-RUN chmod +x mvnw && ./mvnw clean package -DskipTests
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
 FROM registry.access.redhat.com/ubi9/openjdk-25-runtime:1.24
 COPY --from=build --chown=185 /workspace/target/quarkus-app/lib/ /deployments/lib/
