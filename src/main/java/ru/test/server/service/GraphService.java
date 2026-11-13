@@ -2,6 +2,7 @@ package ru.test.server.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.protobuf.InvalidProtocolBufferException;
 import jakarta.enterprise.context.ApplicationScoped;
 import ru.test.data.DataGenerator;
 import ru.test.data.migration.MigrationEngine;
@@ -155,7 +156,9 @@ public class GraphService {
         int originalVersion = -1;
         try {
             originalVersion = GraphSnapshotProto.parseFrom(data).getSchemaVersion();
-        } catch (Exception ignored) {}
+        } catch (InvalidProtocolBufferException e) {
+            // все равно обработается в deserializeFromBytes
+        }
 
         GraphDto migratedDto = protobufSerializer.deserializeFromBytes(data);
         graph.restoreFromSnapshot(migratedDto);
