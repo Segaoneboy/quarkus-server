@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package ru.test.proto;
+
+option java_package = "ru.test.data.serialization.proto";
+option java_outer_classname = "SocialGraphProtos";
+option java_multiple_files = true;
+
+enum ProfileTypeProto {
+  USER = 0;
+  ADMIN = 1;
+  DELETED = 2;
+}
+
+message ProfileProto {
+  int32 id = 1;
+  ProfileTypeProto type = 2;
+  string name = 3;
+  string city = 4;
+  int32 birth_year = 5;
+  repeated string groups = 6;
+
+  double rating = 7;
+  string bio = 8;
+}
+
+message EdgeProto {
+  int32 from_id = 1;
+  int32 friend_id = 2;
+  int32 strength = 3;
+}
+
+message GraphSnapshotProto {
+  int32 schema_version = 1;
+  repeated ProfileProto profiles = 2;
+  repeated EdgeProto edges = 3;
+}
